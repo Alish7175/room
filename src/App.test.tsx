@@ -1,4 +1,6 @@
+import { HttpResponse, http } from 'msw';
 import App from './App';
+import { server } from './test/mocks/server';
 import { render, screen, fireEvent } from './utils/test-utils'
 describe("App", () => {
     it("checking whether Hello world text is available", () => {
@@ -29,4 +31,17 @@ describe("App", () => {
             fireEvent.click(buttonElement);
         }).not.toThrow();
     });
+
+    it('Api success scenario on load', async () => {
+        render(<App />);
+        // list items
+        const listItems = await screen.findAllByRole("listitem");
+        // Check if the list items are visible
+        expect(listItems).toHaveLength(1); // We expect one list item based on the mock data
+
+        // Check the content of the list item
+        expect(listItems[0]).toHaveTextContent('Do something nice for someone I care about')
+    });
+
+    
 })    
