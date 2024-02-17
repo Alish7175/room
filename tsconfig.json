@@ -25,7 +25,7 @@
     ".eslintrc.cjs",
     ".prettierrc.cjs",
     "src",
-    ".src/test/setup.ts"
-  ],
+    ".src/test/setup.ts", 
+    "tailwind.config.cjs"  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
