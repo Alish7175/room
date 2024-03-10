@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
-import { axiosClient } from "../../ApiClient";
+import { useEffect, useState} from "react";
+// import { axiosClient } from "../../ApiClient";
+import useFetchList from "../../hooks/useFetchList";
+import style from "./BasicTestPage.module.css"
 
 interface IMockDataType {
   id: number;
@@ -10,24 +12,7 @@ interface IMockDataType {
 
 export default function BasicTestPage() {
   const [count, setCount] = useState<number>(0);
-  const [todos, setTodos] = useState<IMockDataType[] | null>(null);
-
-  useEffect(() => {
-    // fetch("https://dummyjson.com/todos")
-    //   .then(response => {
-    //     if (response.ok) return response.json();
-    //   })
-    //   .catch(error => {throw new Error(error)})
-    //   .then(response => setTodos(response?.todos))
-    axiosClient
-      .get("/todos", { params: {} })
-      .then((response) => {
-        setTodos(response?.data?.todos);
-      })
-      .catch((error) => {
-        throw new Error(error);
-      });
-  }, []);
+  const todos = useFetchList("/todos", "todos");
 
   function handleCount() {
     setCount((prevState) => prevState + 1);
@@ -35,15 +20,16 @@ export default function BasicTestPage() {
   return (
     <>
       <section id="counter_section">
-        <p data-testid="count">{count}</p>
+        <p data-testid="count" className="hello">{count}</p>
+        <h1 className={`${style.hello}`}>Hello World</h1>
         <button onClick={handleCount}>+1</button>
       </section>
       <section id="todos_section">
         <ul>
-          {todos &&
-            todos?.map((todoElement) => {
+          {todos && todos.length && todos?.map((todoElement:IMockDataType) => {
               return <li key={todoElement.id}>{todoElement.todo}</li>;
             })}
+          {todos && !todos.length && <li key="1">No Data Found!!</li>}  
         </ul>
       </section>
     </>
